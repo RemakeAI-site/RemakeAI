@@ -1,8 +1,9 @@
+import { objectStorage } from './b2';
 import { z } from 'zod';
 import { activity, body, fail, id, json, now, type Context } from './core';
 import {
   digestStream, disposition, formatForName, hex, inspectDimensions, inspectFormat, MiB, parseRange,
-  PART_SIZE, R2Storage, safeFilename, streamZip, ZIP_FILE_LIMIT, ZIP_SIZE_LIMIT,
+  PART_SIZE, safeFilename, streamZip, ZIP_FILE_LIMIT, ZIP_SIZE_LIMIT,
 } from './storage';
 
 const DEFAULT_STORAGE_LIMIT = 10 * 1024 * MiB;
@@ -58,7 +59,7 @@ function parses<T>(schema: z.ZodType<T>, value: unknown) {
 function changed(result: D1Result) { return (result.meta.changes ?? 0) > 0; }
 const isContent = (type: Target): type is ContentTarget => type === 'publication' || type === 'idea';
 const ownerColumn = (type: ContentTarget) => `${type}_id`;
-const store = (c: Context) => new R2Storage(c.env.MEDIA);
+const store = (c: Context) => objectStorage(c.env);
 const leaseAfter = (duration = MAX_LEASE_MS) => new Date(Date.now() + duration).toISOString();
 
 function statement(c: Context, sql: string, values: unknown[] = []) {

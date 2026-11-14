@@ -11,6 +11,7 @@ type StoredPart = { partNumber: number; etag: string };
 
 // The media service depends on this interface rather than Cloudflare-specific R2 methods.
 export interface ObjectStorage {
+  check(): Promise<void>;
   inspect(key: string): Promise<{ size: number } | null>;
   read(key: string, range?: ByteRange): Promise<ObjectContent | null>;
   write(key: string, bytes: Uint8Array<ArrayBuffer>, mime: string, sha256?: string): Promise<void>;
@@ -23,6 +24,8 @@ export interface ObjectStorage {
 
 export class R2Storage implements ObjectStorage {
   constructor(private readonly bucket: R2Bucket) {}
+
+  async check() { await this.bucket.list({limit:1}); }
 
   async inspect(key: string) {
     const object = await this.bucket.head(key);

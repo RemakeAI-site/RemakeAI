@@ -1,5 +1,6 @@
+import { objectStorage } from './b2';
 import { body, fail, id, json, now, type Context } from './core';
-import { digestStream, disposition, inspectFormat, PART_SIZE, R2Storage, streamZip, type ObjectStorage } from './storage';
+import { digestStream, disposition, inspectFormat, PART_SIZE, streamZip, type ObjectStorage } from './storage';
 
 const schemas = {
   media_assets:'id storage_key original_filename mime_type format file_size sha256 media_type width height duration preview_storage_key preview_size created_at deleted_at',
@@ -75,7 +76,7 @@ async function exportZip(c:Context) {
   const timestamp = now();
   const manifest:Manifest = {format:1,created_at:timestamp,tables:Object.fromEntries(tables.map((table,index)=>[table,queried[index].results]))};
   const manifestBytes = new TextEncoder().encode(JSON.stringify(manifest));
-  const base = new R2Storage(c.env.MEDIA);
+  const base = objectStorage(c.env);
   const key = 'manifest.json';
   const storage = Object.create(base) as ObjectStorage;
   storage.read = async (filename,range) => filename === key
@@ -176,7 +177,7 @@ async function putObject(c:Context, session:ImportSession, key:string, number:nu
     const equivalent = (actual?.mime==='image/heic' && info.mime==='image/heif') || (actual?.mime==='video/mp4' && info.mime==='video/quicktime');
     if (!actual || (actual.mime!==info.mime && !equivalent)) fail(415,'Формат файла не совпадает с описью.');
   }
-  const storage = new R2Storage(c.env.MEDIA);
+  const storage = objectStorage(c.env);
   if (info.size <= PART_SIZE) {
     const checksum = info.expected_hash ?? undefined;
     if (checksum && await digestStream(new Blob([bytes]).stream() as unknown as ReadableStream<Uint8Array>) !== checksum) fail(422,'Контрольная сумма оригинала не совпадает.');
@@ -245,7 +246,7 @@ async function commit(c:Context, session:ImportSession) {
   return json({ok:true});
 }
 async function cancel(c:Context, session:ImportSession) {
-  const storage = new R2Storage(c.env.MEDIA);
+  const storage = objectStorage(c.env);
   // Use bounded pages so large cancellations stay below provider subrequest limits.
   const {results} = await c.db.prepare('SELECT * FROM import_objects WHERE session_id=? LIMIT 15').bind(session.id).all<ImportObject>();
   for (const obj of results) {
@@ -277,7 +278,7 @@ export async function backup(c:Context):Promise<Response|undefined> {
   if (path === '/api/export/object' && method==='GET') {
     const key = c.url.searchParams.get('key') ?? '';
     if (!objectKey.test(key) || !await c.db.prepare('SELECT id FROM media_assets WHERE storage_key=? OR preview_storage_key=?').bind(key,key).first()) fail(404,'Объект не найден.');
-    const result = await c.env.MEDIA.get(key);
+    const result = await objectStorage(c.env).read(key);
     if (!result) fail(404,'Не удалось прочитать оригинал.');
     return new Response(result.body,{headers:{'Content-Type':'application/octet-stream','Content-Length':String(result.size),'Cache-Control':'no-store'}});
   }

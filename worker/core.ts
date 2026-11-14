@@ -1,6 +1,10 @@
 export interface Env {
   DB: D1Database;
-  MEDIA: R2Bucket;
+  MEDIA?: R2Bucket;
+  B2_ENDPOINT?: string;
+  B2_BUCKET?: string;
+  B2_KEY_ID?: string;
+  B2_APPLICATION_KEY?: string;
   ASSETS?: Fetcher;
   MAX_STORAGE_BYTES?: string;
   BACKUP_IMPORT_ENABLED?: string;

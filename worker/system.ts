@@ -1,3 +1,4 @@
+import { objectStorage } from './b2';
 import { z } from 'zod';
 import { activity, body, fail, id, json, now, VERSION, type Context } from './core';
 
@@ -40,7 +41,8 @@ async function collectOrphans(c: Context) {
   ]);
   const {results} = await c.db.prepare('SELECT storage_key FROM media_cleanup ORDER BY created_at LIMIT 25').all<{storage_key:string}>();
   if (!results.length) return;
-  await c.env.MEDIA.delete(results.map(row=>row.storage_key));
+  const storage = objectStorage(c.env);
+  for (const row of results) await storage.remove(row.storage_key);
   await c.db.prepare(`DELETE FROM media_cleanup WHERE storage_key IN (SELECT value FROM json_each(?))`).bind(JSON.stringify(results.map(row=>row.storage_key))).run();
 }
 
@@ -151,13 +153,14 @@ async function health(c: Context, write = false) {
   };
   const database = check(() => c.db.prepare('SELECT 1').first());
   const storage = check(async () => {
-    if (!write) return c.env.MEDIA.list({limit:1});
+    const store = objectStorage(c.env);
+    if (!write) return store.check();
     const key = `diagnostics/${id()}`;
     try {
-      await c.env.MEDIA.put(key,'remake-ai-studio');
-      const object = await c.env.MEDIA.get(key);
-      if (await object?.text() !== 'remake-ai-studio') throw new Error('bad probe');
-    } finally { await c.env.MEDIA.delete(key); }
+      await store.write(key,new TextEncoder().encode('remake-ai-studio'),'text/plain');
+      const object = await store.read(key);
+      if (!object || await new Response(object.body).text() !== 'remake-ai-studio') throw new Error('bad probe');
+    } finally { await store.remove(key); }
   });
   const [db,bucket] = await Promise.all([database,storage]);
   return {database:db,storage:bucket};
