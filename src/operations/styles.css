@@ -1,0 +1,93 @@
+.ops-heading { display: flex; align-items: start; justify-content: space-between; gap: 1.25rem; margin-bottom: 1.6rem; }
+.ops-heading h1 { font-size: clamp(1.8rem, 3.4vw, 2.8rem); line-height: 1.08; margin: 0; letter-spacing: -.035em; }
+.ops-heading p { max-width: 44rem; margin: .55rem 0 0; }
+.ops-stack { display: grid; gap: 1rem; min-width: 0; }
+.ops-section { min-width: 0; padding: clamp(.9rem, 2vw, 1.45rem); }
+.ops-section h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+.ops-section summary { cursor: pointer; font-weight: 650; min-height: 2.75rem; display: flex; align-items: center; gap: .5rem; }
+.ops-section summary::before { content: '›'; font-size: 1.25rem; display: inline-block; color: var(--accent, #20d6cd); }
+.ops-section[open] summary::before { transform: rotate(90deg); }
+.ops-section small { color: var(--muted, #96a6b5); }
+.ops-field-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem),1fr)); gap: .9rem 1rem; align-items: end; }
+.ops-field { display: grid; gap: .35rem; min-width: 0; font-size: .88rem; }
+.ops-field > :is(input,select,textarea) { width: 100%; min-width: 0; min-height: 2.55rem; }
+.ops-field > input[type=color] { padding: .18rem .35rem; }
+.ops-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
+.ops-toolbar > * { min-width: 0; }
+.ops-notice { border: 1px solid rgba(32,214,205,.35); background: rgba(32,214,205,.08); padding: .75rem .9rem; border-radius: .7rem; overflow-wrap: anywhere; }
+.ops-notice.error { border-color: rgba(255,106,111,.45); background: rgba(255,106,111,.09); color: #ffb1b4; }
+.ops-notice.warning { border-color: rgba(255,201,104,.42); background: rgba(255,201,104,.08); }
+.ops-row { display: flex; justify-content: space-between; align-items: center; gap: .8rem; min-width: 0; padding: .72rem 0; border-bottom: 1px solid rgba(145,171,191,.14); }
+.ops-row:last-child { border-bottom: 0; }
+.ops-row > div:first-child { min-width: 0; overflow-wrap: anywhere; }
+.ops-row strong { display: block; }
+.ops-row a { overflow-wrap: anywhere; }
+.ops-placeholder { padding: 1.4rem 1rem; text-align: center; border: 1px dashed rgba(145,171,191,.25); border-radius: .7rem; }
+.ops-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: .75rem; }
+.ops-metric { padding: 1rem; min-width: 0; }
+.ops-metric span { display: block; }
+.ops-metric output { display: block; margin-top: .35rem; font-size: clamp(1.1rem, 2vw, 1.6rem); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.ops-modal { color: inherit; background: var(--surface, #111923); border: 1px solid rgba(145,171,191,.32); padding: clamp(1rem, 3vw, 1.5rem); border-radius: .9rem; width: min(31rem,calc(100% - 1.3rem)); max-height: min(90dvh, 40rem); overflow-y: auto; }
+.ops-modal::backdrop { background: rgba(0,0,0,.7); backdrop-filter: blur(3px); }
+.ops-modal h2 { margin: 0; line-height: 1.2; overflow-wrap: anywhere; }
+.ops-modal-form { display: grid; gap: 1rem; }
+.ops-calendar { display: grid; gap: 1px; background: rgba(145,171,191,.16); border: 1px solid rgba(145,171,191,.16); grid-template-columns: repeat(7,minmax(0,1fr)); border-radius: .85rem; overflow: hidden; min-width: 0; }
+.ops-calendar-head { text-align: center; padding: .55rem 0; font-size: .76rem; background: var(--surface, #111923); }
+.ops-calendar-cell { background: var(--surface, #111923); min-width: 0; min-height: 6rem; padding: .36rem .3rem; }
+.ops-calendar-cell.outside { background: var(--bg, #090d12); }
+.ops-calendar-cell.week { min-height: 10rem; }
+.ops-calendar-cell button.ops-day { width: 2rem; height: 2rem; padding: 0; font-variant-numeric: tabular-nums; line-height: 1; min-height: 0; justify-content: center; border-radius: 50%; }
+.ops-calendar-cell .ops-day.today { color: var(--accent, #20d6cd); border-color: var(--accent, #20d6cd); }
+.ops-calendar-cell .ops-day[aria-pressed=true] { color: #041519; background: var(--accent, #20d6cd); }
+.ops-calendar-events { display: grid; gap: .2rem; min-width: 0; margin-top: .3rem; }
+.ops-event, .ops-event-link { display: grid; align-items: center; min-width: 0; text-decoration: none; color: inherit; }
+.ops-event { background: rgba(145,171,191,.075); grid-template-columns: .25rem minmax(0,1fr); gap: .38rem; padding: .35rem .3rem; border-radius: .35rem; }
+.ops-event:hover { background: rgba(145,171,191,.14); }
+.ops-event i { height: 100%; min-height: 1.25rem; border-radius: 3px; }
+.ops-event-name { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .74rem; }
+.ops-event-time { font-size: .66rem; font-variant-numeric: tabular-nums; }
+.ops-event-count { display: none; }
+.ops-calendar-label { flex: 1; margin: 0; font-size: 1.1rem; text-transform: capitalize; min-width: 8rem; }
+.ops-calendar-list { display: grid; gap: .7rem; }
+.ops-calendar-list h3 { margin: 0; font-size: .94rem; }
+.ops-cover { width: 2.3rem; height: 3rem; border-radius: .28rem; object-fit: cover; background: rgba(32,214,205,.12); flex: 0 0 2.3rem; }
+.ops-row-detail { display: flex; align-items: center; gap: .65rem; }
+.ops-row-detail > div { min-width: 0; }
+.ops-dark-label { background: #101c27; border-radius: 999px; padding: .2rem .55rem; display: inline-block; font-size: .75rem; }
+.ops-progress { width: 100%; accent-color: var(--accent, #20d6cd); }
+.ops-status-editor { display: grid; grid-template-columns: 1fr 5rem 5.5rem; gap: .55rem; align-items: end; }
+.ops-custom-item { display: grid; grid-template-columns: 1fr auto; gap: .6rem; align-items: center; }
+.ops-tabs .btn[aria-pressed=true], .ops-toolbar .btn[aria-pressed=true] { border-color: var(--accent, #20d6cd); color: var(--accent, #20d6cd); }
+.ops-info-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,24rem),1fr)); gap: .8rem; }
+.ops-section :is(input,select,textarea):focus-visible, .ops-toolbar a:focus-visible, .ops-event:focus-visible { outline: 2px solid var(--accent, #20d6cd); outline-offset: 2px; }
+@media (max-width: 680px) {
+  .ops-heading { flex-direction: column; gap: .7rem; margin-bottom: 1rem; }
+  .ops-calendar-cell, .ops-calendar-cell.week { min-height: 3.7rem; padding: .24rem 0; text-align: center; }
+  .ops-calendar-cell button.ops-day { width: 100%; height: 2.65rem; border-radius: .45rem; }
+  .ops-calendar-events { display: none; }
+  .ops-event-count { display: block; color: var(--accent, #20d6cd); line-height: .8rem; font-size: .7rem; }
+  .ops-row { align-items: flex-start; flex-direction: column; }
+  .ops-status-editor { grid-template-columns: 1fr 4rem 4.5rem; gap: .35rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ops-modal { scroll-behavior: auto; }
+}
+.ops-loading { height: .95rem; width: min(100%,24rem); margin: .4rem 0; border-radius: .4rem; }
+.ops-section h3 { font-size: .98rem; margin: .65rem 0 .35rem; }
+.ops-section p { margin-top: .4rem; }
+.ops-archive-cover { object-fit: cover; width: 2.8rem; height: 3.7rem; border-radius: .38rem; background: rgba(32,214,205,.12); flex: 0 0 2.8rem; }
+.ops-checkbox { display: flex; gap: .5rem; align-items: center; font-size: .88rem; }
+.ops-checkbox input { width: 1.15rem; height: 1.15rem; accent-color: var(--accent, #20d6cd); }
+.ops-explain { overflow-wrap: anywhere; }
+.ops-code { padding: .7rem; border-radius: .45rem; background: rgba(0,0,0,.23); white-space: normal; overflow-wrap: anywhere; font-size: .86rem; margin: 0; }
+.ops-cover-fallback { display: grid; place-items: center; color: var(--accent, #20d6cd); }
+.ops-status-form { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .65rem; align-items: end; }
+.ops-logo { object-fit: contain; width: 3.25rem; height: 3.25rem; border-radius: .45rem; background: #0d1720; }
+@media (max-width: 520px) { .ops-status-form { grid-template-columns: 1fr; } .ops-status-form > button { justify-self: start; } }
+.ops-loading.skeleton { min-height: .95rem; }
+:root[data-density=compact] .ops-row { padding-block: .42rem; }
+:root[data-theme=light] .ops-notice.error { color: #8c1630; }
+:root[data-theme=light] .ops-code { background: #edf4f6; }
+@media (max-width: 680px) {
+  .ops-toolbar .btn, .ops-row .btn { min-height: 44px; }
+}
